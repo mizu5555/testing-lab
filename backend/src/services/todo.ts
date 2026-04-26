@@ -2,6 +2,7 @@ import { ModifyResult } from 'mongoose'
 
 import * as repo from '../repo/todo'
 import { Todo, TodoBody } from '../types/todo'
+import { validateTodoName } from '../utils/name'
 
 export const getTodos: () => Promise<Array<Todo>> = async () => {
   const todos = await repo.findAllTodos()
@@ -9,6 +10,9 @@ export const getTodos: () => Promise<Array<Todo>> = async () => {
 }
 
 export const addTodo: (todoBody: TodoBody) => Promise<Todo> = async (todoBody) => {
+  if (!validateTodoName(todoBody.name)) {
+    throw new Error('INVALID_NAME')
+  }
   const newTodo = await repo.createTodo({
     ...todoBody
   })

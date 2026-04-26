@@ -88,3 +88,43 @@ test.describe('Todo Page', () => {
         await expect(addButton).toBeEnabled();
     });
 });
+
+test.describe('Todo Page Load', () => {
+    const BASE_URL = 'http://localhost:5173';
+
+    test('should display My Todos heading when page loads', async ({ page }) => {
+        // Arrange
+        await page.route('**/api/v1/todos', route =>
+            route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify({ todos: [] })
+            })
+        );
+
+        // Act
+        await page.goto(BASE_URL);
+
+        // Assert
+        await expect(page.getByRole('heading', { name: 'My Todos' })).toBeVisible();
+    });
+
+    test('should display todo name on page when API returns a todo', async ({ page }) => {
+        // Arrange
+        await page.route('**/api/v1/todos', route =>
+            route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify({
+                    todos: [{ id: '1', name: 'Buy groceries', description: 'milk and eggs', status: false }]
+                })
+            })
+        );
+
+        // Act
+        await page.goto(BASE_URL);
+
+        // Assert
+        await expect(page.getByRole('heading', { name: 'Buy groceries' })).toBeVisible();
+    });
+});

@@ -1,5 +1,6 @@
-import { describe, test, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { myCustomAdd, fabonacci } from '../src/utils/math'
+import { validateTodoName } from '../src/utils/name'
 
 describe('math utils testing', () => {
   describe('myCustomAdd testing', () => {
@@ -20,7 +21,7 @@ describe('math utils testing', () => {
   })
 
   describe('fabonacci testing', () => {
-    it('should return 1 when n is 1', () => {     
+    it('should return 1 when n is 1', () => {
       expect(fabonacci(1)).toBe(1)
     })
     it('should return 1 when n is 2', () => {
@@ -29,5 +30,29 @@ describe('math utils testing', () => {
     it('should return 2 when n is 3', () => {
       expect(fabonacci(3)).toBe(2)
     })
+  })
+})
+
+describe('validateTodoName', () => {
+  it('should return false when name is an empty string', () => {
+    // Arrange
+    const name = ''
+
+    // Act
+    const result = validateTodoName(name)
+
+    // Assert
+    expect(result).toBe(false)
+  })
+
+  it('should return false when name exceeds 20 characters', () => {
+    // Arrange
+    const name = 'a'.repeat(21)
+
+    // Act
+    const result = validateTodoName(name)
+
+    // Assert
+    expect(result).toBe(false)
   })
 })
