@@ -27,6 +27,9 @@ export const TodoRouter = (server: FastifyInstance, opts: RouteShorthandOptions,
       const todo = await addTodo(todoBody)
       return reply.status(201).send({ todo })
     } catch (error) {
+      if (error instanceof Error && error.message === 'INVALID_NAME') {
+        return reply.status(400).send({ msg: 'Todo name must be between 1 and 20 characters' })
+      }
       server.log.error(`POST /v1/todos Error: ${error}`)
       return reply.status(500).send(`[Server Error]: ${error}`)
     }
