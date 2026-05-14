@@ -17,11 +17,13 @@ export const serverOf: () => FastifyInstance = () => {
 
 export const serverStart: (appConfig: AppConfig) => (server: FastifyInstance) => Promise<FastifyInstance> =
   (appConfig) => async (server) => {
-    await establishConnection(appConfig.mongoConnectionString)
     const listenOptions: FastifyListenOptions = {
       port: appConfig.port,
       host: appConfig.host
     }
     await server.listen(listenOptions)
+    establishConnection(appConfig.mongoConnectionString).catch((err) => {
+      console.error('MongoDB connection failed:', err)
+    })
     return server
   }
