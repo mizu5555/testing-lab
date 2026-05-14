@@ -78,5 +78,5 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }} \
+            --set-env-vars HOST=0.0.0.0,MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }} \
             --port 3000
